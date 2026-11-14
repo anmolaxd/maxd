@@ -122,22 +122,10 @@ h1, h2, h3, .tabs button, .tc-count, .d-grid b, .log-row .n, .rule-list b { font
 }
 
 /* tabs */
-.tabs { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); }
-.tabs button { appearance: none; background: transparent; color: var(--muted); border: 0; border-right: 1px solid var(--line); padding: 20px 22px; text-align: left; font: inherit; font-weight: 700; font-size: clamp(16px, 1.4vw, 19px); cursor: pointer; display: flex; flex-direction: column; gap: 6px; position: relative; }
-.tabs button:last-child { border-right: 0; }
-.tabs button span { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; font-stretch: 100%; }
-.tabs button:hover { color: var(--text); }
-.tabs button[aria-selected="true"] { color: #0a0a0a; background: var(--accent); }
 @media (max-width: 760px) { .tabs { grid-template-columns: 1fr 1fr; } .tabs button:nth-child(2) { border-right: 0; } .tabs button:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
-.panel { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); border: 1px solid var(--line); border-top: 0; padding: clamp(24px, 4vw, 56px); background: var(--surface); }
-.panel[hidden] { display: none; }
-.panel h3 { font-stretch: 78%; font-weight: 800; font-size: clamp(30px, 3vw, 42px); line-height: 1.05; margin: 0 0 18px; }
-.panel-copy p { color: #c3c3bd; margin: 0 0 22px; }
 .specs { list-style: none; padding: 0; margin: 0 0 18px; border-top: 1px solid var(--line); }
 .specs li { padding: 12px 0 12px 28px; border-bottom: 1px solid var(--line); position: relative; font-size: 15px; }
 .specs li::before { content: ""; position: absolute; left: 0; top: 19px; width: 12px; height: 3px; background: var(--accent); }
-@media (max-width: 860px) { .panel { grid-template-columns: 1fr; } }
-.panel.enter .mock { animation: rise .5s cubic-bezier(.2,.8,.2,1); }
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
 
 /* mocks (illustrations, aria-hidden) */
@@ -224,7 +212,6 @@ h1, h2, h3, .display, .display-md, .rule-list b { text-transform: uppercase; }
 .hero .display { font-size: clamp(30px, 3.6vw, 56px); }
 .display-md { font-size: clamp(26px, 3.6vw, 52px); line-height: 1.05; }
 .stage-col h3 { font-size: 19px; line-height: 1.1; }
-.panel h3 { font-size: clamp(22px, 2.2vw, 30px); }
 .tc-count { font-size: 60px; }
 .d-grid b { font-size: 32px; }
 .log-row .n { font-size: 36px; }
@@ -243,8 +230,6 @@ h1, h2, h3, .display, .display-md, .rule-list b { text-transform: uppercase; }
 .s-form span.typed { color: var(--text); }
 .mock-dash.run .d-bars span { animation: grow .9s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--n) * 90ms); transform-origin: bottom; }
 @keyframes grow { from { transform: scaleY(0); } }
-.tabs button { position: relative; }
-.tabs button.prog::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: #0a0a0a; opacity: .4; transform-origin: left; animation: prog var(--dur) linear both; }
 @keyframes prog { from { transform: scaleX(0); } }
 
 /* ---------- motion borrowed in spirit from tomdekoning.work: running words, masked rises, scroll-lit text, letter-roll links ---------- */
@@ -317,13 +302,60 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
 }
 
 /* services: 3D stage, a bar between two plate racks; plates load with the open tab (bar3d.js) */
-.kit-stage { position: relative; isolation: isolate; overflow: hidden; height: clamp(300px, 34vw, 500px); margin-bottom: 24px; background: #0e0e0e; border: 1px solid var(--line);
-  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size: 64px 64px; background-position: center bottom; }
 .ks-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background: radial-gradient(46% 70% at 50% 100%, rgba(255,79,31,.85), rgba(255,79,31,.3) 45%, rgba(255,79,31,0) 75%),
               radial-gradient(22% 40% at 12% 100%, rgba(255,90,40,.45), rgba(255,90,40,0) 70%),
               radial-gradient(22% 40% at 88% 100%, rgba(255,90,40,.45), rgba(255,90,40,0) 70%); }
 .kit-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .ks-note { position: absolute; left: 20px; right: 20px; top: 16px; margin: 0; display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
-@media (max-width: 700px) { .kit-stage { height: 260px; } .ks-note span:last-child { display: none; } }
+
+/* ---------- services: one pinned frame (stage on top, services list + live demo below) ---------- */
+.kit-stage { position: relative; isolation: isolate; overflow: hidden; min-height: 240px; background: #0e0e0e; border: 1px solid var(--line);
+  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 64px 64px; background-position: center bottom; }
+.kit-pin { display: grid; gap: 14px; }
+.kit-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 44px); min-height: 0; }
+.kit-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); min-height: 0; overflow: hidden; }
+.kit-steps li { border-bottom: 1px solid var(--line); }
+.kit-steps button { all: unset; box-sizing: border-box; display: flex; gap: 14px; align-items: baseline; width: 100%; padding: 12px 0; cursor: pointer;
+  font-family: var(--display); text-transform: uppercase; font-size: clamp(18px, 1.7vw, 24px); line-height: 1.1; color: #55554f; transition: color .3s ease; }
+.kit-steps button span { font-family: var(--mono); font-size: 12px; color: inherit; transition: color .3s ease; }
+.kit-steps button:hover { color: var(--text); }
+.kit-steps button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kit-steps li.on button { color: var(--text); }
+.kit-steps li.on button span { color: var(--accent); }
+.ks-copy { padding: 0 0 14px 34px; }
+.ks-copy p { margin: 0 0 10px; color: #b4b4ae; font-size: 15px; line-height: 1.5; }
+.ks-copy .specs { margin: 0 0 8px; }
+.ks-copy .specs li { padding: 6px 0 6px 22px; font-size: 13px; }
+.ks-copy .specs li::before { top: 13px; width: 10px; }
+.ks-copy .text-link { font-size: 14px; }
+.kit-demos { position: relative; min-height: 0; }
+.kit-demos .mock { margin-bottom: 40px; }
+/* pinned version, only when JS runs (without JS everything above simply stacks) */
+.kit-js .kit-scroll { height: calc(100vh - var(--navh, 73px) + 3 * 75vh); }
+.kit-js .kit-pin { position: sticky; top: var(--navh, 73px); height: calc(100vh - var(--navh, 73px)); padding: 12px 0 16px; box-sizing: border-box;
+  grid-template-rows: minmax(0, 43fr) minmax(0, 57fr); }
+.kit-js .kit-stage { min-height: 0; }
+.kit-js .kit-steps li:not(.on) .ks-copy { display: none; }
+.kit-js .kit-demos .mock { position: absolute; inset: 0 0 22px 0; align-self: stretch; justify-self: stretch; min-height: 0; margin: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s; }
+.kit-js .kit-demos .mock.on { opacity: 1; visibility: visible; }
+.kit-js .kit-demos .mock::after { bottom: -21px; }
+/* chats: newest messages push older ones up, like a real chat */
+.kit-js .mock-phone { display: flex; flex-direction: column; }
+.m-thread { display: flex; flex-direction: column; }
+.kit-js .m-thread { flex: 1; min-height: 0; justify-content: flex-end; overflow: hidden; }
+.kit-js .m-thread .m-bubble { flex: none; }
+@media (max-height: 820px) { .kit-js .ks-copy .specs { display: none; } }
+@media (max-width: 860px) {
+  .kit-body { grid-template-columns: 1fr; }
+  .kit-js .kit-scroll { height: calc(100svh - var(--navh, 73px) + 3 * 70svh); }
+  .kit-js .kit-pin { height: calc(100svh - var(--navh, 73px)); grid-template-rows: minmax(0, 27fr) minmax(0, 73fr); gap: 10px; padding-top: 8px; }
+  .kit-js .kit-body { grid-template-rows: auto minmax(0, 1fr); gap: 10px; }
+  .kit-steps button { padding: 8px 0; font-size: 16px; }
+  .ks-copy { padding: 0 0 10px 30px; }
+  .ks-copy p { font-size: 14px; margin: 0; }
+  .kit-js .ks-copy .specs, .kit-js .ks-copy .text-link { display: none; }
+  .kit-js .kit-demos .mock { padding: 14px; }
+  .ks-note span:first-child { display: none; }
+}

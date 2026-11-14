@@ -86,6 +86,45 @@
     });
   });
 
+  /* ---------- how we work: each term lights up as it reaches the middle of the screen ---------- */
+  const terms = document.querySelectorAll('.rule-list li');
+  if (!motion) terms.forEach((li) => li.classList.add('on'));
+  else {
+    const termIO = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('on'); termIO.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -42% 0px' });
+    terms.forEach((li) => termIO.observe(li));
+  }
+
+  /* ---------- footer: glow drifts in with scroll; 3D barbell loads only when the footer is near ---------- */
+  const fcard = document.querySelector('.fcard');
+  if (fcard) {
+    const glow = fcard.querySelector('.fc-glow'), canvas = fcard.querySelector('.fc-3d');
+    if (motion && glow) {
+      let cur = 0, target = 0, running = false;
+      const read = () => {
+        const r = fcard.getBoundingClientRect();
+        target = Math.min(1, Math.max(0, (innerHeight - r.top) / Math.min(r.height, innerHeight)));
+      };
+      const step = () => {
+        cur += (target - cur) * 0.08;
+        glow.style.transform = `translate(${(-22 * (1 - cur)).toFixed(2)}%, ${(16 * (1 - cur)).toFixed(2)}%) scale(${(0.85 + 0.15 * cur).toFixed(3)})`;
+        glow.style.opacity = (0.55 + 0.45 * cur).toFixed(3);
+        if (Math.abs(target - cur) > 0.001) requestAnimationFrame(step); else running = false;
+      };
+      const kick = () => { read(); if (!running) { running = true; requestAnimationFrame(step); } };
+      addEventListener('scroll', kick, { passive: true }); kick();
+    }
+    if (canvas && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        import('./bar3d.js').then((m) => m.default(canvas, !motion)).catch(() => canvas.remove());  // no WebGL or offline: glow and name still show
+      }, { rootMargin: '600px 0px' });
+      io.observe(canvas);
+    }
+  }
+
   /* ---------- motion that only runs when the visitor allows it ---------- */
   if (motion) {
     // Wrap each word in a mask span; keeps inner elements (like .hl) intact.

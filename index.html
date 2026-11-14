@@ -18,7 +18,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=7">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
 
@@ -184,16 +185,27 @@
 
 <!-- TERMS -->
 <section class="rules" id="rules">
-  <p class="mono-label">How we work</p>
-  <h2 class="display-md">The terms, in plain English</h2>
-  <ol class="rule-list">
-    <li><b>Fixed price</b>You get a written quote after the call. We don't bill by the hour.</li>
-    <li><b>Half upfront</b>The other half is due once it's live and you're happy with it.</li>
-    <li><b>You approve it first</b>No message reaches a member until you've signed it off.</li>
-    <li><b>Your gym's name</b>Members see your gym on every message. They don't see ours.</li>
-    <li><b>Member data</b>Kept separate from other gyms. You can download or delete it at any time.</li>
-    <li><b>Payments</b>Renewals are paid into your own account. We never handle the money.</li>
-  </ol>
+  <div class="rules-grid">
+    <div class="rules-head">
+      <p class="mono-label">How we work</p>
+      <h2 class="display-md">The terms, in plain English</h2>
+      <p class="sub">Six things that hold for every gym we set up.</p>
+    </div>
+    <div class="rules-body">
+      <p class="rules-group">Money</p>
+      <ol class="rule-list">
+        <li><span class="rn" aria-hidden="true">01</span><div><b>Fixed price</b><p>You get a written quote after the call. We don't bill by the hour.</p></div></li>
+        <li><span class="rn" aria-hidden="true">02</span><div><b>Half upfront</b><p>The other half is due once it's live and you're happy with it.</p></div></li>
+        <li><span class="rn" aria-hidden="true">03</span><div><b>Payments go to you</b><p>Renewals are paid into your own account. We never handle the money.</p></div></li>
+      </ol>
+      <p class="rules-group">Your members</p>
+      <ol class="rule-list" start="4">
+        <li><span class="rn" aria-hidden="true">04</span><div><b>You approve it first</b><p>No message reaches a member until you've signed it off.</p></div></li>
+        <li><span class="rn" aria-hidden="true">05</span><div><b>Your gym's name</b><p>Members see your gym on every message. They don't see ours.</p></div></li>
+        <li><span class="rn" aria-hidden="true">06</span><div><b>Member data</b><p>Kept separate from other gyms. You can download or delete it at any time.</p></div></li>
+      </ol>
+    </div>
+  </div>
 </section>
 
 <!-- FAQ -->
@@ -224,16 +236,22 @@
 
 </main>
 
-<div class="marquee mq-big" data-marquee="70" data-dir="1" aria-hidden="true">
-  <div class="mq-track"><div class="mq-set"><img src="brand/logo-dark.svg" alt="" width="1000" height="175"></div></div>
-</div>
-
-<footer class="footer">
-  <div class="f-brand"><img class="logo" src="brand/logo-dark.svg" alt="MAXD" width="172" height="30"><p>Renewal reminders and an AI front desk for independent gyms.</p></div>
-  <p class="mono-note">© 2026 MAXD · WhatsApp +91 87625 53585</p>
-  <nav aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+<footer class="fcard">
+  <div class="fc-glow" aria-hidden="true"></div>
+  <div class="fc-top">
+    <div class="f-brand"><img class="logo" src="brand/logo-dark.svg" alt="MAXD" width="172" height="30"><p>Renewal reminders and an AI front desk for independent gyms.</p></div>
+    <dl class="fc-links">
+      <div><dt>WhatsApp</dt><dd><a href="https://wa.me/918762553585?text=Hi%2C%20I%27d%20like%20to%20talk%20about%20MAXD%20for%20my%20gym." target="_blank" rel="noopener">+91 87625 53585</a></dd></div>
+      <div><dt>Legal</dt><dd><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></dd></div>
+    </dl>
+  </div>
+  <div class="fc-stage" aria-hidden="true">
+    <div class="marquee fc-mq" data-marquee="55" data-dir="1"><div class="mq-track"><div class="mq-set"><span>MAXD</span><i></i><span class="o">MAXD</span><i></i></div></div></div>
+    <canvas class="fc-3d"></canvas>
+  </div>
+  <div class="fc-bottom"><span>© 2026 MAXD</span><span>Mysuru, India</span></div>
 </footer>
 
-<script src="main.js?v=6"></script>
+<script src="main.js?v=7"></script>
 </body>
 </html>

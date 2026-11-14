@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;500&family=Geist:wght@800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -27,9 +27,10 @@
 <header class="nav">
   <a class="brand" href="#top" aria-label="MAXD home"><span class="logo">MA<span class="x"><span class="bar"></span>X</span>D</span></a>
   <nav aria-label="Main">
-    <a href="#leak">Where members drop off</a>
+    <a href="#leak">How it works</a>
     <a href="#kit">Services</a>
     <a href="#programme">Setup</a>
+    <a href="#about">Who we are</a>
     <a href="#faq">FAQ</a>
   </nav>
   <a class="btn btn-sm" href="https://wa.me/918762553585?text=Hi%2C%20I%27d%20like%20to%20talk%20about%20MAXD%20for%20my%20gym." target="_blank" rel="noopener">Book a call</a>
@@ -41,11 +42,11 @@
 <section class="hero" id="top">
   <div class="hero-copy">
     <p class="mono-label">For independent gyms and studios</p>
-    <h1 class="display">Someone's membership ends this week. <span class="hl">Do they know?</span></h1>
-    <p class="lede">Most gyms find out a member has left when the payment doesn't come in. MAXD messages every member before their plan runs out, chases the ones who don't renew, and tells you who hasn't been in for a week while there's still time to call them. It works with the gym software you already have.</p>
+    <h1 class="display">Someone's membership ends this week. <span class="hl">Has anyone reminded them?</span></h1>
+    <p class="lede">Most gyms only notice a member has gone when the payment doesn't arrive. MAXD reminds every member before their plan runs out, follows up with the ones who don't renew, and works alongside the gym software you already have.</p>
     <div class="cta-row">
       <a class="btn" href="https://wa.me/918762553585?text=Hi%2C%20I%27d%20like%20to%20talk%20about%20MAXD%20for%20my%20gym." target="_blank" rel="noopener">Book a 30-minute call <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="btn btn-line" href="https://gym-os-demo-liard.vercel.app" target="_blank" rel="noopener">Try the demo</a>
+      <a class="btn btn-line" href="#kit">See how it works</a>
     </div>
   </div>
 
@@ -144,7 +145,7 @@
   <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4" hidden>
     <div class="panel-copy">
       <h3>Full platform</h3>
-      <p>Member app, front desk, trainer portal and owner dashboard in one system, carrying your gym's name. Right now it's a working demo with sample data. No gym is using it live yet.</p>
+      <p>Member app, front desk, trainer portal and owner dashboard in one system, carrying your gym's name. Right now it's a working demo with sample data. No gym is using it live yet, and the demo still shows its working name, Gym OS.</p>
       <ul class="specs"><li>Member app: memberships, class and PT bookings, payments</li><li>Front desk: check-in, attendance, member records</li><li>Trainer portal: schedules, clients, workouts</li><li>Owner dashboard for one branch or several</li></ul>
       <a class="text-link" href="https://gym-os-demo-liard.vercel.app" target="_blank" rel="noopener">Open the demo and sign in as Gym Owner <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
@@ -190,6 +191,25 @@
   </ol>
 </section>
 
+<!-- WHO WE ARE -->
+<section class="about" id="about">
+  <div class="sec-head">
+    <p class="mono-label">Who we are</p>
+    <h2 class="display-md">We're taking on our first gyms now</h2>
+  </div>
+  <div class="about-grid">
+    <div>
+      <p>MAXD is built by Studio AXD, a small software studio in Mysuru, India, run by Anmol Prasad. There are no gyms using MAXD live yet, and we won't pretend otherwise.</p>
+      <p>What that means for you: the person on your first call is the person who builds and checks your setup, and your gym gets far more attention than it would from a large software company.</p>
+    </div>
+    <dl class="about-facts">
+      <div><dt>Renewal reminders</dt><dd>Built and tested. Runs in test mode until the owner approves it.</dd></div>
+      <div><dt>Full gym platform</dt><dd>Working demo with sample data, open for you to try.</dd></div>
+      <div><dt>Other software we've shipped</dt><dd>An online scholarship exam platform for Aashrya Educational Foundation in Karnataka, with online payments. Built and tested, first exam planned for January 2027.</dd></div>
+    </dl>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="faq" id="faq">
   <div class="sec-head">
@@ -199,6 +219,7 @@
   <div class="qa">
     <details><summary>Do I have to switch from my current gym software?</summary><p>No. The reminders, front desk and website work alongside the software you already use, using its data where it allows or a simple export of your member list. The full platform is only for gyms that want to move everything into one system.</p></details>
     <details><summary>What does it cost?</summary><p>It depends on the size of the gym and which services you want, so we give each gym a fixed quote after a 30-minute call. You pay half to start and half once it's live and you're happy with it.</p></details>
+    <details><summary>Which number do the WhatsApp messages come from?</summary><p>Your gym's own WhatsApp Business number, sent through WhatsApp's official business platform. Members see your gym's name, not ours.</p></details>
     <details><summary>Will my members know it's MAXD?</summary><p>No. Every message, page and app screen carries your gym's name and branding.</p></details>
     <details><summary>Who can see my member data?</summary><p>You, and the people who run your setup. It's only used to send your gym's messages, it's kept separate from every other gym, and you can download or delete it whenever you want.</p></details>
     <details><summary>Is the full platform live anywhere?</summary><p>Not yet. The full platform is a working demo with sample data. The renewal reminders are built and tested, and they run in test mode until the gym owner approves them.</p></details>
@@ -224,6 +245,6 @@
   <nav aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
 </footer>
 
-<script src="main.js?v=4"></script>
+<script src="main.js?v=5"></script>
 </body>
 </html>

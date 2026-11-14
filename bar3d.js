@@ -1,6 +1,6 @@
-// MAXD footer: the logo's barbell in 3D, loaded one service at a time.
-// Each plate pair is one MAXD service. main.js sets canvas.loadProgress (0..1) from scroll;
-// plate k slides on as progress passes it, and the bar lifts once all four are on ("maxed").
+// MAXD services: the logo's barbell in 3D, loaded one service at a time.
+// Each plate pair is one MAXD service. main.js sets canvas.loadProgress (0..1) from the open service tab;
+// plate k slides on when tab k opens, and the bar lifts once all four are on ("maxed").
 // With reduced motion it renders one still frame, fully loaded.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -64,15 +64,13 @@ export default function init(canvas, still) {
   const cool = new THREE.DirectionalLight(0x7fb0ff, 0.7); cool.position.set(7, 2, -5); scene.add(cool);
 
   // Fit the barbell to the canvas width (it is ~11.6 units long, seen at an angle).
-  let wide = true;
   const resize = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    wide = w >= 860;
     const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect);
-    const fill = wide ? 0.56 : 0.78;
+    const fill = 0.8;
     camera.position.set(0, 0.9, Math.max(9, (11.6 * 0.86 / 2) / (Math.tan(hfov / 2) * fill)));
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
@@ -93,9 +91,8 @@ export default function init(canvas, still) {
 
   const base = { x: 0.16, y: -0.5, z: -0.06 };
   const set = (x, y, z) => bell.rotation.set(x, y, z);
-  const shiftX = () => (wide ? 1.5 : 0);     // leave room for the list on the left on wide screens
   set(base.x, base.y, base.z);
-  bell.position.set(shiftX(), -0.4, 0);
+  bell.position.set(0, -0.4, 0);
   if (still) { place(1); bell.position.y = 0; renderer.render(scene, camera); return; }
 
   let mx = 0, my = 0, spin = 0, lastY = scrollY, visible = true, t0 = performance.now(), shown = 0, lift = 0;
@@ -107,7 +104,7 @@ export default function init(canvas, still) {
   const cur = { x: base.x, y: base.y };
   const tick = (t) => {
     requestAnimationFrame(tick);
-    const dt = Math.min((t - t0) / 1000, 0.05); t0 = t;
+    const dt = Math.max(0, Math.min((t - t0) / 1000, 0.05)); t0 = t;  // first frame can be stamped before t0
     if (!visible || document.hidden) return;
     const k = Math.min(1, dt * 6);
     shown += ((canvas.loadProgress ?? 1) - shown) * k;     // smooth the scroll-driven loading
@@ -117,7 +114,7 @@ export default function init(canvas, still) {
     cur.y += (base.y + spin + mx * 0.35 - cur.y) * Math.min(1, dt * 4);
     cur.x += (base.x + my * 0.18 - cur.x) * Math.min(1, dt * 4);
     set(cur.x, cur.y, base.z + Math.sin(t / 1400) * 0.025);
-    bell.position.set(shiftX(), -0.4 + lift * 0.55 + Math.sin(t / 1100) * 0.06, 0);
+    bell.position.set(0, -0.4 + lift * 0.55 + Math.sin(t / 1100) * 0.06, 0);
     renderer.render(scene, camera);
   };
   requestAnimationFrame(tick);

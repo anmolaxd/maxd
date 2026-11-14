@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=8">
+<link rel="stylesheet" href="styles.css?v=9">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -91,10 +91,16 @@
 
 <!-- SERVICES: tabbed explorer -->
 <section class="kit" id="kit">
-  <div class="sec-head">
-    <p class="mono-label">Services</p>
-    <h2 class="display-md">Start with one. Add the others if it's working.</h2>
-    <p class="sub">Everything is set up around your plans, prices and timetable. Nothing goes live until you've read the messages and approved them.</p>
+  <div class="sec-head kit-head">
+    <div>
+      <p class="mono-label">Services</p>
+      <h2 class="display-md">Start with one. Add the others if it's working.</h2>
+      <p class="sub">Everything is set up around your plans, prices and timetable. Nothing goes live until you've read the messages and approved them.</p>
+    </div>
+    <div class="kit-bar">
+      <canvas aria-hidden="true"></canvas>
+      <p class="kit-bar-note">Each plate on the bar is one service</p>
+    </div>
   </div>
 
   <div class="tabs" role="tablist" aria-label="MAXD services">
@@ -246,24 +252,13 @@
     </dl>
   </div>
   <div class="fc-stage">
-    <div class="fc-load">
-      <p class="mono-label">One plate per service</p>
-      <ol class="fc-plates">
-        <li><span>01</span>Renewal reminders</li>
-        <li><span>02</span>AI Front Desk</li>
-        <li><span>03</span>Trial website</li>
-        <li><span>04</span>Full platform</li>
-      </ol>
-      <p class="fc-load-note">Start with one. Add the others when it's working.</p>
-    </div>
     <div class="fc-scene" aria-hidden="true">
       <div class="marquee fc-mq" data-marquee="55" data-dir="1"><div class="mq-track"><div class="mq-set"><span>MAXD</span><i></i><span class="o">MAXD</span><i></i></div></div></div>
-      <canvas class="fc-3d"></canvas>
     </div>
   </div>
   <div class="fc-bottom"><span>© 2026 MAXD</span><span>Mysuru, India</span></div>
 </footer>
 
-<script src="main.js?v=8"></script>
+<script src="main.js?v=9"></script>
 </body>
 </html>

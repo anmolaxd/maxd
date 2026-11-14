@@ -58,7 +58,7 @@
   };
   // Tabs step through the demos on their own until the visitor picks one.
   // The 3D bar beside the heading carries one plate per service up to the open tab (bar3d.js reads loadProgress).
-  const kitBar = document.querySelector('.kit-bar canvas');
+  const kitBar = document.querySelector('.kit-stage canvas');
   if (kitBar) kitBar.loadProgress = motion ? 0 : 1;
   let auto = true, inView = false, next;
   const run = (tab) => {

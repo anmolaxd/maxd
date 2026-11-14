@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=9">
+<link rel="stylesheet" href="styles.css?v=10">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -91,16 +91,16 @@
 
 <!-- SERVICES: tabbed explorer -->
 <section class="kit" id="kit">
-  <div class="sec-head kit-head">
-    <div>
-      <p class="mono-label">Services</p>
-      <h2 class="display-md">Start with one. Add the others if it's working.</h2>
-      <p class="sub">Everything is set up around your plans, prices and timetable. Nothing goes live until you've read the messages and approved them.</p>
-    </div>
-    <div class="kit-bar">
-      <canvas aria-hidden="true"></canvas>
-      <p class="kit-bar-note">Each plate on the bar is one service</p>
-    </div>
+  <div class="sec-head">
+    <p class="mono-label">Services</p>
+    <h2 class="display-md">Start with one. Add the others if it's working.</h2>
+    <p class="sub">Everything is set up around your plans, prices and timetable. Nothing goes live until you've read the messages and approved them.</p>
+  </div>
+
+  <div class="kit-stage">
+    <div class="ks-glow" aria-hidden="true"></div>
+    <canvas aria-hidden="true"></canvas>
+    <p class="ks-note"><span>Each plate is one service</span><span>Open a service below to load it</span></p>
   </div>
 
   <div class="tabs" role="tablist" aria-label="MAXD services">
@@ -259,6 +259,6 @@
   <div class="fc-bottom"><span>© 2026 MAXD</span><span>Mysuru, India</span></div>
 </footer>
 
-<script src="main.js?v=9"></script>
+<script src="main.js?v=10"></script>
 </body>
 </html>

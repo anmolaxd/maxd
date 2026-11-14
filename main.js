@@ -1,4 +1,4 @@
-﻿// MAXD site: hero renewal timeline, lifecycle track, tabs, scroll reveal. No dependencies.
+// MAXD site: hero renewal timeline, lifecycle track, tabs, scroll reveal. No dependencies.
 (() => {
   const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
 
@@ -31,14 +31,58 @@
       const p = document.getElementById(b.getAttribute('aria-controls'));
       p.hidden = !on; p.classList.toggle('enter', on && motion);
     });
+    if (motion) run(t);
   };
+
+  /* ---------- service demos: each mock plays like a short screen recording ---------- */
+  const timers = new Map();
+  const play = (mock) => {
+    (timers.get(mock) || []).forEach(clearTimeout);
+    const t = []; const at = (ms, fn) => t.push(setTimeout(fn, ms));
+    timers.set(mock, t);
+    mock.classList.remove('run'); void mock.offsetWidth; mock.classList.add('run');
+    mock.querySelectorAll('[data-at]').forEach((el) => {
+      el.classList.remove('shown', 'typing');
+      if (el.dataset.typing) at(+el.dataset.typing, () => el.classList.add('typing'));
+      at(+el.dataset.at, () => { el.classList.remove('typing'); el.classList.add('shown'); });
+    });
+    mock.querySelectorAll('[data-tap]').forEach((el) => { el.classList.remove('tap'); at(+el.dataset.tap, () => el.classList.add('tap')); });
+    mock.querySelectorAll('[data-type]').forEach((el) => {
+      el.dataset.ph ??= el.textContent; el.textContent = el.dataset.ph; el.classList.remove('typed');
+      [...el.dataset.type].forEach((c, k) => at(+el.dataset.typeAt + k * 70, () => { el.textContent = el.dataset.type.slice(0, k + 1); el.classList.add('typed'); }));
+    });
+    mock.querySelectorAll('[data-count]').forEach((el) => {
+      const n = +el.dataset.count;
+      for (let k = 0; k <= n; k++) at(200 + (k / n) * 900, () => (el.textContent = k));
+    });
+  };
+  // Tabs step through the demos on their own until the visitor picks one.
+  let auto = true, inView = false, next;
+  const run = (tab) => {
+    const mock = document.getElementById(tab.getAttribute('aria-controls')).querySelector('.mock');
+    play(mock);
+    clearTimeout(next);
+    tabs.forEach((b) => b.classList.remove('prog'));
+    if (!auto) return;
+    const dur = +mock.dataset.dur + 2500;
+    tab.style.setProperty('--dur', dur + 'ms'); void tab.offsetWidth; tab.classList.add('prog');
+    next = setTimeout(() => { if (inView) select(tabs[(tabs.indexOf(tab) + 1) % tabs.length]); }, dur);
+  };
+  if (motion && tabs.length) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting === inView) return;
+      inView = e.isIntersecting;
+      if (inView) run(tabs.find((b) => b.getAttribute('aria-selected') === 'true'));
+      else { clearTimeout(next); tabs.forEach((b) => b.classList.remove('prog')); }
+    }, { threshold: .3 }).observe(tabs[0].closest('section'));
+  }
   tabs.forEach((t, i) => {
-    t.addEventListener('click', () => select(t));
+    t.addEventListener('click', () => { auto = false; select(t); });
     t.addEventListener('keydown', (e) => {
       const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
       if (!k) return;
       const next = tabs[(i + k + tabs.length) % tabs.length];
-      select(next); next.focus(); e.preventDefault();
+      auto = false; select(next); next.focus(); e.preventDefault();
     });
   });
 

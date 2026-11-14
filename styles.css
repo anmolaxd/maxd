@@ -94,7 +94,7 @@ h1, h2, h3, .tabs button, .tc-count, .d-grid b, .log-row .n, .rule-list b { font
 .strip { margin: 0; text-align: center; padding-top: 22px; padding-bottom: 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 15px; color: var(--muted); }
 
 /* ---------- sections ---------- */
-.leak, .kit, .log, .about, .faq { padding-top: clamp(80px, 11vw, 150px); padding-bottom: clamp(40px, 5vw, 60px); }
+.leak, .kit, .log, .faq { padding-top: clamp(80px, 11vw, 150px); padding-bottom: clamp(40px, 5vw, 60px); }
 .sec-head { margin-bottom: clamp(40px, 6vw, 72px); }
 
 /* lifecycle track */
@@ -226,13 +226,6 @@ h1, h2, h3, .tabs button, .tc-count, .d-grid b, .log-row .n, .rule-list b { font
 .legal a { color: var(--accent); }
 
 /* who we are */
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); }
-.about-grid p { color: #c3c3bd; font-size: 18px; margin: 0 0 18px; max-width: 560px; }
-.about-facts { margin: 0; border-top: 1px solid var(--line); }
-.about-facts div { padding: 16px 0; border-bottom: 1px solid var(--line); }
-.about-facts dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 4px; }
-.about-facts dd { margin: 0; }
-@media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
 
 /* Bowlby One has one weight and is very wide: no faux bold, smaller sizes */
 h1, h2, h3, .display, .display-md, .tc-count, .d-grid b, .log-row .n, .rule-list b { font-weight: 400; font-synthesis: none; letter-spacing: -.005em; }

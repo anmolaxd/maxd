@@ -301,7 +301,17 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
 .fc-links dd { margin: 0; font-size: 16px; }
 .fc-links a { color: var(--text); text-decoration: none; }
 .fc-links a:hover { color: var(--accent); }
-.fc-stage { position: relative; height: clamp(300px, 38vw, 580px); }
+.fc-stage { position: relative; }
+.fc-scene { position: relative; height: clamp(320px, 40vw, 600px); }
+/* the services list sits over the left of the scene on wide screens; each item lights up as its plate goes on */
+.fc-load { position: absolute; z-index: 2; left: clamp(24px, 4vw, 48px); top: 4%; width: min(300px, 30%); }
+.fc-plates { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(255,255,255,.1); }
+.fc-plates li { display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-family: var(--display); text-transform: uppercase; font-size: clamp(16px, 1.5vw, 20px); color: #4d4d49; transition: color .45s ease; }
+.fc-plates span { font-family: var(--mono); font-size: 12px; color: inherit; transition: color .45s ease; }
+.fc-plates li.on { color: var(--text); }
+.fc-plates li.on span { color: var(--accent); }
+.fc-load-note { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+@media (max-width: 859px) { .fc-load { position: static; width: auto; padding: 0 clamp(24px, 4vw, 48px); } }
 .fc-mq { position: absolute; left: 0; right: 0; bottom: 4%; }
 .fc-mq .mq-set { padding: 0; gap: .25em; font-size: clamp(96px, 19vw, 330px); }
 .fc-mq .mq-set span { font-size: 1em; line-height: .78; color: var(--text); }
@@ -311,3 +321,7 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
 .fc-3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 .fc-bottom { display: flex; justify-content: space-between; gap: 16px; padding: 16px clamp(24px, 4vw, 48px) 20px; font-family: var(--mono); font-size: 12px; color: rgba(237,237,234,.7); }
 @media (max-width: 700px) { .fc-top { grid-template-columns: 1fr; } }
+@media (max-width: 700px) {
+  .fc-glow { background: radial-gradient(90% 24% at 30% 80%, rgba(255,79,31,.9), rgba(255,79,31,.4) 42%, rgba(255,79,31,0) 72%),
+                         radial-gradient(70% 16% at 80% 86%, rgba(255,90,40,.45), rgba(255,90,40,0) 70%); }
+}

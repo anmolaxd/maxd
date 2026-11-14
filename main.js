@@ -115,6 +115,21 @@
       const kick = () => { read(); if (!running) { running = true; requestAnimationFrame(step); } };
       addEventListener('scroll', kick, { passive: true }); kick();
     }
+    // Loading the bar: progress runs from the bar entering the screen to the bottom of the page,
+    // so it always reaches 1. Item k lights up when its plate goes on; bar3d.js reads canvas.loadProgress.
+    const stage = fcard.querySelector('.fc-stage'), items = [...fcard.querySelectorAll('.fc-plates li')];
+    if (stage && items.length) {
+      const load = () => {
+        const scene = canvas ? canvas.parentElement : stage;   // start once the bar itself is on screen
+        const top = scene.getBoundingClientRect().top + scrollY;
+        const start = top - innerHeight * 0.7;
+        const end = Math.min(document.documentElement.scrollHeight - innerHeight, top + scene.offsetHeight * 0.5 - innerHeight * 0.5);
+        const p = motion ? Math.min(1, Math.max(0, (scrollY - start) / Math.max(1, end - start))) : 1;
+        items.forEach((li, k) => li.classList.toggle('on', p >= (k + 0.55) / items.length));
+        if (canvas) canvas.loadProgress = p;
+      };
+      addEventListener('scroll', load, { passive: true }); addEventListener('resize', load); load();
+    }
     if (canvas && 'IntersectionObserver' in window) {
       const io = new IntersectionObserver(([e]) => {
         if (!e.isIntersecting) return;

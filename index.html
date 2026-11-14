@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
 
@@ -66,13 +66,16 @@
   </figure>
 </section>
 
-<p class="strip">Set up for strength gyms, CrossFit boxes, Pilates and yoga studios, boxing and MMA clubs, and personal training studios.</p>
+<div class="strip marquee" data-marquee="34">
+  <p class="sr-only">Set up for strength gyms, CrossFit boxes, Pilates and yoga studios, boxing and MMA clubs, and personal training studios.</p>
+  <div class="mq-track" aria-hidden="true"><div class="mq-set"><span>Strength gyms</span><i></i><span>CrossFit boxes</span><i></i><span>Pilates studios</span><i></i><span>Yoga studios</span><i></i><span>Boxing clubs</span><i></i><span>MMA clubs</span><i></i><span>Personal training studios</span><i></i></div></div>
+</div>
 
 <!-- WHERE MEMBERS DROP OFF -->
 <section class="leak" id="leak">
   <div class="sec-head">
     <p class="mono-label">Where members drop off</p>
-    <h2 class="display-md">Most members don't cancel. Their plan just runs out.</h2>
+    <h2 class="display-md" data-fill>Most members don't cancel. Their plan just runs out.</h2>
     <p class="sub">They stop coming for a few weeks, the end date passes, and nobody asks them to renew. These are the points where MAXD sends a message or flags someone for a call.</p>
   </div>
   <div class="track" id="track">
@@ -221,12 +224,16 @@
 
 </main>
 
+<div class="marquee mq-big" data-marquee="70" data-dir="1" aria-hidden="true">
+  <div class="mq-track"><div class="mq-set"><img src="brand/logo-dark.svg" alt="" width="1000" height="175"></div></div>
+</div>
+
 <footer class="footer">
   <div class="f-brand"><img class="logo" src="brand/logo-dark.svg" alt="MAXD" width="172" height="30"><p>Renewal reminders and an AI front desk for independent gyms.</p></div>
   <p class="mono-note">© 2026 MAXD · WhatsApp +91 87625 53585</p>
   <nav aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
 </footer>
 
-<script src="main.js?v=5"></script>
+<script src="main.js?v=6"></script>
 </body>
 </html>

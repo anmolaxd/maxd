@@ -8,7 +8,8 @@
   --muted: #8f8f8a;
   --accent: #ff4f1f;   /* brand orange, from the logo */
   --win: #c6f432;      /* used only for "renewed" / success states */
-  --display: "Archivo", system-ui, sans-serif;
+  --display: "Big Shoulders Display", Impact, sans-serif;
+  --body: "Barlow", system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
   --g: clamp(16px, 4vw, 56px);
   --max: 1320px;
@@ -16,7 +17,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--display); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; }
 img, svg { display: block; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -26,6 +27,9 @@ section, .strip, .footer { padding-left: var(--g); padding-right: var(--g); }
 section > * { max-width: var(--max); margin-left: auto; margin-right: auto; }
 
 /* ---------- type ---------- */
+/* stadium-scoreboard display face for headings and big numbers */
+h1, h2, h3, .tabs button, .tc-count, .d-grid b, .log-row .n, .rule-list b { font-family: var(--display); }
+.tc-count small { font-family: var(--body); }
 .display, .display-md { font-family: var(--display); font-stretch: 82%; font-weight: 800; letter-spacing: -.012em; line-height: 1.02; margin: 0; text-wrap: balance; }
 .display { font-size: clamp(44px, 7.6vw, 120px); }
 .display-md { font-size: clamp(36px, 5.2vw, 76px); max-width: 1000px; margin-left: 0; }

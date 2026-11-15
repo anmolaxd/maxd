@@ -1,4 +1,4 @@
-// MAXD site: hero renewal timeline, lifecycle track, pinned services frame with demos, running words, heading rises, scroll reveal. No dependencies.
+// MAXD site: hero renewal timeline, lifecycle track, 3D barbell hero, pinned services frame with demos, running words, heading rises, scroll reveal. No dependencies.
 (() => {
   const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
 
@@ -46,12 +46,10 @@
   };
   /* ---------- services: one pinned frame; scrolling through it opens each service, loads its plates, plays its demo ---------- */
   const kitScroll = document.getElementById('kitScroll');
-  const kitBar = document.querySelector('.kit-stage canvas');
-  if (kitBar) kitBar.loadProgress = motion ? 0 : 1;
   if (kitScroll) {
     const steps = [...kitScroll.querySelectorAll('.kit-steps > li')];   // not the spec bullets inside
     const demos = [...kitScroll.querySelectorAll('.kit-demos .mock')];
-    const pin = kitScroll.querySelector('.kit-pin'), count = kitScroll.querySelector('.ks-count b');
+    const pin = kitScroll.querySelector('.kit-pin');
     document.documentElement.classList.add('kit-js');      // pinned layout only when JS runs
     const nav = document.querySelector('.nav');            // the frame pins just under the sticky nav
     const setNav = () => nav && document.documentElement.style.setProperty('--navh', nav.offsetHeight + 'px');
@@ -62,7 +60,6 @@
       active = k;
       steps.forEach((li, i) => { li.classList.toggle('on', i === k); li.querySelector('button').setAttribute('aria-expanded', i === k); });
       demos.forEach((d, i) => d.classList.toggle('on', i === k));
-      if (count) count.textContent = String(k + 1).padStart(2, '0');
       if (motion) play(demos[k]);
     };
     const range = () => ({ top: kitScroll.getBoundingClientRect().top + scrollY, len: Math.max(1, kitScroll.offsetHeight - pin.offsetHeight) });
@@ -70,8 +67,6 @@
       const { top, len } = range(), p = (scrollY - top) / len;
       const k = Math.min(steps.length - 1, Math.max(0, Math.floor(p * steps.length)));
       show(k);
-      // plates stay on the racks until the frame is nearly in place, then follow the open service
-      if (kitBar && motion) kitBar.loadProgress = p < -0.12 ? 0 : (k + 1) / steps.length;
     };
     addEventListener('scroll', onScroll, { passive: true });
     addEventListener('resize', onScroll);
@@ -82,14 +77,15 @@
     onScroll();
   }
 
-  // Load the 3D bar only when the services section is near; no WebGL or offline: the glow and services still work.
-  if (kitBar && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      import('./bar3d.js').then((m) => m.default(kitBar, !motion)).catch(() => kitBar.remove());
-    }, { rootMargin: '600px 0px' });
-    io.observe(kitBar);
+  /* ---------- hero: 3D barbell. Fades in on the racks, then the four service plates load one pair at a time and the bar lifts ---------- */
+  // No WebGL or offline: the canvas goes and the glow stays.
+  const heroBar = document.querySelector('.hero-stage canvas');
+  if (heroBar) {
+    heroBar.loadProgress = motion ? 0 : 1;
+    import('./bar3d.js').then((m) => m.default(heroBar, !motion)).then(() => {
+      heroBar.classList.add('ready');
+      if (motion) setTimeout(() => (heroBar.loadProgress = 1), 700);
+    }).catch(() => heroBar.remove());
   }
 
   /* ---------- how we work: each term lights up as it reaches the middle of the screen ---------- */

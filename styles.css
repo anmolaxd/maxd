@@ -63,7 +63,7 @@ h1, h2, h3, .tabs button, .tc-count, .d-grid b, .log-row .n, .rule-list b { font
 @media (max-width: 860px) { .nav nav { display: none; } }
 
 /* ---------- hero ---------- */
-.hero { position: relative; display: grid; grid-template-columns: 1.25fr .9fr; gap: clamp(32px, 5vw, 80px); align-items: center; padding-top: clamp(40px, 5vw, 72px); padding-bottom: clamp(56px, 8vw, 110px); max-width: calc(var(--max) + 2 * var(--g)); margin: 0 auto; isolation: isolate; }
+.hero { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: center; padding-top: clamp(40px, 5vw, 72px); padding-bottom: clamp(56px, 8vw, 110px); max-width: calc(var(--max) + 2 * var(--g)); margin: 0 auto; isolation: isolate; }
 /* scoreboard grid, fading out behind the headline so text stays clean */
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 88px 88px; -webkit-mask-image: linear-gradient(100deg, transparent 35%, #000 75%); mask-image: linear-gradient(100deg, transparent 35%, #000 75%); }
 .hero > * { margin: 0; max-width: none; }
@@ -301,18 +301,30 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
                          radial-gradient(70% 16% at 80% 86%, rgba(255,90,40,.45), rgba(255,90,40,0) 70%); }
 }
 
-/* services: 3D stage, a bar between two plate racks; plates load with the open tab (bar3d.js) */
-.ks-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(46% 70% at 50% 100%, rgba(255,79,31,.85), rgba(255,79,31,.3) 45%, rgba(255,79,31,0) 75%),
-              radial-gradient(22% 40% at 12% 100%, rgba(255,90,40,.45), rgba(255,90,40,0) 70%),
-              radial-gradient(22% 40% at 88% 100%, rgba(255,90,40,.45), rgba(255,90,40,0) 70%); }
-.kit-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.ks-note { position: absolute; left: 20px; right: 20px; top: 16px; margin: 0; display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
+/* hero: 3D barbell stage (bar3d.js). Plates printed with the four services load on arrival, then the bar lifts. */
+.hero-stage { position: relative; isolation: isolate; align-self: center; height: clamp(380px, 40vw, 560px); margin: 0 calc(-1 * var(--g)) 0 calc(-2 * var(--g));
+  -webkit-mask-image: radial-gradient(120% 95% at 50% 55%, #000 55%, transparent 100%); mask-image: radial-gradient(120% 95% at 50% 55%, #000 55%, transparent 100%); }
+.hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(50% 42% at 50% 64%, rgba(255,79,31,.75), rgba(255,79,31,.25) 45%, rgba(255,79,31,0) 75%),
+              radial-gradient(28% 26% at 14% 80%, rgba(255,90,40,.35), rgba(255,90,40,0) 70%),
+              radial-gradient(28% 26% at 86% 80%, rgba(255,90,40,.35), rgba(255,90,40,0) 70%); animation: breathe 6s ease-in-out infinite; }
+@keyframes breathe { 50% { opacity: .7; } }
+@media (prefers-reduced-motion: reduce) { .hero-glow { animation: none; } }
+.hero-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
+.hero-stage canvas.ready { opacity: 1; }
+.hero-note { position: absolute; left: 0; right: 0; bottom: 12%; margin: 0; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
+@media (max-width: 960px) {
+  /* phones/tablets: the barbell leads, full width, headline right under it */
+  .hero { padding-top: 0; }
+  .hero-stage { order: -1; height: clamp(230px, 62vw, 420px); width: 100vw; margin: 0 0 0 calc(50% - 50vw); }
+}
+/* the countdown card that used to sit in the hero, now beside the "plan just runs out" heading */
+.leak-intro { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(32px, 5vw, 80px); align-items: center; margin-bottom: clamp(40px, 6vw, 72px); }
+.leak-intro .sec-head { margin-bottom: 0; }
+.leak-intro .timeline-card { margin: 0; }
+@media (max-width: 960px) { .leak-intro { grid-template-columns: 1fr; } }
 
-/* ---------- services: one pinned frame (stage on top, services list + live demo below) ---------- */
-.kit-stage { position: relative; isolation: isolate; overflow: hidden; min-height: 240px; background: #0e0e0e; border: 1px solid var(--line);
-  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size: 64px 64px; background-position: center bottom; }
+/* ---------- services: one pinned frame (services list + live demo) ---------- */
 .kit-pin { display: grid; gap: 14px; }
 .kit-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 3vw, 44px); min-height: 0; }
 .kit-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); min-height: 0; overflow: hidden; }
@@ -335,8 +347,7 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
 /* pinned version, only when JS runs (without JS everything above simply stacks) */
 .kit-js .kit-scroll { height: calc(100vh - var(--navh, 73px) + 3 * 75vh); }
 .kit-js .kit-pin { position: sticky; top: var(--navh, 73px); height: calc(100vh - var(--navh, 73px)); padding: 12px 0 16px; box-sizing: border-box;
-  grid-template-rows: minmax(0, 43fr) minmax(0, 57fr); }
-.kit-js .kit-stage { min-height: 0; }
+  grid-template-rows: minmax(0, 1fr); }
 .kit-js .kit-steps li:not(.on) .ks-copy { display: none; }
 .kit-js .kit-demos .mock { position: absolute; inset: 0 0 22px 0; align-self: stretch; justify-self: stretch; min-height: 0; margin: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s; }
 .kit-js .kit-demos .mock.on { opacity: 1; visibility: visible; }
@@ -350,17 +361,25 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
 @media (max-width: 860px) {
   .kit-body { grid-template-columns: 1fr; }
   .kit-js .kit-scroll { height: calc(100svh - var(--navh, 73px) + 3 * 70svh); }
-  .kit-js .kit-pin { height: calc(100svh - var(--navh, 73px)); grid-template-rows: minmax(0, 27fr) minmax(0, 73fr); gap: 10px; padding-top: 8px; }
+  .kit-js .kit-pin { height: calc(100svh - var(--navh, 73px)); gap: 10px; padding-top: 8px; }
   .kit-js .kit-body { grid-template-rows: auto minmax(0, 1fr); gap: 10px; }
   .kit-steps button { padding: 8px 0; font-size: 16px; }
   .ks-copy { padding: 0 0 10px 30px; }
   .ks-copy p { font-size: 14px; margin: 0; }
   .kit-js .ks-copy .specs, .kit-js .ks-copy .text-link { display: none; }
   .kit-js .kit-demos .mock { padding: 14px; }
-  .ks-note span:first-child { display: none; }
 }
-/* phones: the decorative plates take room the service text and demo need, so drop them */
+/* phones: compact the website and dashboard demos so each fits the frame (chats already scroll like a real chat) */
 @media (max-width: 600px) {
-  .kit-js .kit-stage { display: none; }
-  .kit-js .kit-pin { grid-template-rows: minmax(0, 1fr); }
+  .kit-js .kit-demos .mock { padding: 12px; }
+  .kit-js .kit-demos .m-top { margin-bottom: 10px; padding-bottom: 8px; }
+  .kit-js .kit-demos .m-sys { margin-top: 10px; }
+  .kit-js .kit-demos .s-bar { margin: -2px 0 10px; padding-bottom: 8px; }
+  .kit-js .kit-demos .s-h { font-size: 24px; }
+  .kit-js .kit-demos .s-form span { padding: 6px 8px; }
+  .kit-js .kit-demos .s-plans { margin-top: 10px; }
+  .kit-js .kit-demos .s-plans span { height: 44px; padding: 6px 8px; }
+  .kit-js .kit-demos .d-grid div { padding: 8px 10px; }
+  .kit-js .kit-demos .d-grid b { font-size: 24px; }
+  .kit-js .kit-demos .d-bars { height: 48px; margin-top: 10px; }
 }

@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=12">
+<link rel="stylesheet" href="styles.css?v=14">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -50,21 +50,11 @@
     </div>
   </div>
 
-  <figure class="timeline-card" aria-label="Illustration: one member's plan counting down while reminders go out, ending in a renewal">
-    <div class="tc-head">
-      <div><p class="mono-label">Member 0142 · Quarterly plan</p><p class="tc-count"><span id="tcDays">30</span><small> days left</small></p></div>
-      <span class="stamp" id="tcStamp">Renewed</span>
-    </div>
-    <div class="tc-meter"><span id="tcFill"></span></div>
-    <ol class="tc-events" id="tcEvents">
-      <li data-d="30"><span class="tick"></span><b>Day 30</b>First reminder, with a renew link</li>
-      <li data-d="14"><span class="tick"></span><b>Day 14</b>Reminder on WhatsApp</li>
-      <li data-d="7"><span class="tick"></span><b>Day 7</b>Reminder by email</li>
-      <li data-d="3"><span class="tick"></span><b>Day 3</b>Last reminder before the end date</li>
-      <li data-d="0" class="win"><span class="tick"></span><b>Renewed</b>Paid into the gym's own account</li>
-    </ol>
-    <figcaption class="mono-note">Illustration with sample data</figcaption>
-  </figure>
+  <div class="hero-stage" aria-hidden="true">
+    <div class="hero-glow"></div>
+    <canvas></canvas>
+    <p class="hero-note">Four services · one bar · each plate is one</p>
+  </div>
 </section>
 
 <div class="strip marquee" data-marquee="34">
@@ -74,10 +64,28 @@
 
 <!-- WHERE MEMBERS DROP OFF -->
 <section class="leak" id="leak">
-  <div class="sec-head">
-    <p class="mono-label">Where members drop off</p>
-    <h2 class="display-md" data-fill>Most members don't cancel. Their plan just runs out.</h2>
-    <p class="sub">They stop coming for a few weeks, the end date passes, and nobody asks them to renew. These are the points where MAXD sends a message or flags someone for a call.</p>
+  <div class="leak-intro">
+    <div class="sec-head">
+      <p class="mono-label">Where members drop off</p>
+      <h2 class="display-md" data-fill>Most members don't cancel. Their plan just runs out.</h2>
+      <p class="sub">They stop coming for a few weeks, the end date passes, and nobody asks them to renew. These are the points where MAXD sends a message or flags someone for a call.</p>
+    </div>
+
+    <figure class="timeline-card" aria-label="Illustration: one member's plan counting down while reminders go out, ending in a renewal">
+      <div class="tc-head">
+        <div><p class="mono-label">Member 0142 · Quarterly plan</p><p class="tc-count"><span id="tcDays">30</span><small> days left</small></p></div>
+        <span class="stamp" id="tcStamp">Renewed</span>
+      </div>
+      <div class="tc-meter"><span id="tcFill"></span></div>
+      <ol class="tc-events" id="tcEvents">
+        <li data-d="30"><span class="tick"></span><b>Day 30</b>First reminder, with a renew link</li>
+        <li data-d="14"><span class="tick"></span><b>Day 14</b>Reminder on WhatsApp</li>
+        <li data-d="7"><span class="tick"></span><b>Day 7</b>Reminder by email</li>
+        <li data-d="3"><span class="tick"></span><b>Day 3</b>Last reminder before the end date</li>
+        <li data-d="0" class="win"><span class="tick"></span><b>Renewed</b>Paid into the gym's own account</li>
+      </ol>
+      <figcaption class="mono-note">Illustration with sample data</figcaption>
+    </figure>
   </div>
   <div class="track" id="track">
     <div class="track-line"><span></span></div>
@@ -97,14 +105,9 @@
     <p class="sub">Everything is set up around your plans, prices and timetable. Nothing goes live until you've read the messages and approved them.</p>
   </div>
 
-  <!-- One pinned frame: scrolling through it opens each service, loads its plates and plays its demo -->
+  <!-- One pinned frame: scrolling through it opens each service and plays its demo -->
   <div class="kit-scroll" id="kitScroll">
     <div class="kit-pin">
-      <div class="kit-stage">
-        <div class="ks-glow" aria-hidden="true"></div>
-        <canvas aria-hidden="true"></canvas>
-        <p class="ks-note"><span>Each plate is one service</span><span class="ks-count"><b>01</b> / 04</span></p>
-      </div>
       <div class="kit-body">
         <ol class="kit-steps">
         <li class="on">
@@ -250,6 +253,6 @@
   <div class="fc-bottom"><span>© 2026 MAXD</span><span>Mysuru, India</span></div>
 </footer>
 
-<script src="main.js?v=11"></script>
+<script src="main.js?v=13"></script>
 </body>
 </html>

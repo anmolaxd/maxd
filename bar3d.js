@@ -1,6 +1,6 @@
-// MAXD services stage: a barbell on J-hooks between two plate racks. Each plate pair is one MAXD service.
-// main.js sets canvas.loadProgress (0..1) from the open service tab: pair k leaves the racks and slides onto
-// the bar when tab k opens, and goes back when you return. All four on: the bar lifts off the hooks ("maxed").
+// MAXD hero stage: a barbell on J-hooks between two plate racks. Each plate pair is one MAXD service.
+// main.js sets canvas.loadProgress (0..1): pair k leaves the racks and slides onto the bar as progress
+// passes k/4. All four on: the bar lifts off the hooks ("maxed").
 // With reduced motion it renders one still frame, fully loaded.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';

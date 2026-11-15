@@ -1,6 +1,6 @@
-// MAXD hero stage: a barbell on J-hooks between two plate racks. Each plate pair is one MAXD service.
-// main.js sets canvas.loadProgress (0..1): pair k leaves the racks and slides onto the bar as progress
-// passes k/4. All four on: the bar lifts off the hooks ("maxed").
+// MAXD hero stage: a floating barbell with orbit rings and drifting particles. Each plate pair is one MAXD service.
+// main.js sets canvas.loadProgress (0..1): pair k flies in and slides onto the bar as progress passes k/4.
+// All four on: the bar's core lights up ("maxed").
 // With reduced motion it renders one still frame, fully loaded.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -53,32 +53,22 @@ export default async function init(canvas, still) {
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.1;
 
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 200);
+  const camera = new THREE.PerspectiveCamera(26, 1, 0.1, 200);
 
   const rubber = new THREE.MeshPhysicalMaterial({ color: 0x0b0b0b, roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 0.9 });
-  const steel = new THREE.MeshStandardMaterial({ color: 0xdadada, roughness: 0.18, metalness: 1, envMapIntensity: 1.2 });
-  const frame = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.45, metalness: 0.7, envMapIntensity: 0.8 });
-  const orange = new THREE.MeshStandardMaterial({ color: 0xff4f1f, roughness: 0.4, metalness: 0.2, emissive: 0xff4f1f, emissiveIntensity: 0.25 });
+  const steel = new THREE.MeshStandardMaterial({ color: 0xdadada, roughness: 0.16, metalness: 1, envMapIntensity: 1.3 });
+  const glow = (color, opacity) => new THREE.MeshBasicMaterial({ color, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false });
 
   const rig = new THREE.Group(); scene.add(rig);
-  const FLOOR = -2.5, REST = 0.35;            // floor height, bar height on the hooks
-  const box = (w, h, d, mat, x, y, z, parent = rig) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); parent.add(m); return m; };
   const along = (mesh, x, parent) => { mesh.rotation.z = Math.PI / 2; mesh.position.x = x; parent.add(mesh); return mesh; };
   const cyl = (r, len, mat, x, parent) => along(new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 48), mat), x, parent);
 
-  // J-hook uprights holding the bar
-  for (const s of [-1, 1]) {
-    box(0.26, REST - FLOOR + 0.5, 0.26, frame, s * 2.75, (REST + 0.5 + FLOOR) / 2 - 0.1, 0);
-    box(0.26, 0.1, 0.42, orange, s * 2.75, REST - 0.18, 0.14);                 // hook lip
-    box(0.9, 0.08, 0.9, frame, s * 2.75, FLOOR + 0.04, 0);                     // foot
-  }
-
-  // The bar
+  // The bar, floating free: no rack or stands, so it reads as a product mark rather than gym equipment
   const bell = new THREE.Group(); rig.add(bell);
   cyl(0.085, 7.2, steel, 0, bell);
   for (const s of [-1, 1]) {
@@ -86,8 +76,9 @@ export default async function init(canvas, still) {
     cyl(0.25, 0.18, steel, s * 3.48, bell);
     cyl(0.2, 0.14, steel, s * 5.66, bell);
   }
+  const core = cyl(0.11, 6.9, glow(0xff4f1f, 0), 0, bell);   // glowing sheath, lights up once all four services are on
 
-  // Plates: lathe body + printed faces. Each lives in the rig so it can travel from rack to bar.
+  // Plates: lathe body + printed faces + a thin glowing rim
   function plate(R, t, tex) {
     const h = t / 2, p = [
       [0.16, -h], [0.32, -h], [0.36, -h + 0.04], [R - 0.3, -h + 0.04], [R - 0.26, -h], [R - 0.07, -h], [R, -h + 0.07],
@@ -103,34 +94,39 @@ export default async function init(canvas, still) {
       for (let i = 0; i < uv.count; i++) uv.setXY(i, pos.getX(i) / (2 * R) + 0.5, pos.getY(i) / (2 * R) + 0.5);
       f.rotation.y = s * Math.PI / 2; f.position.x = s * (h + 0.004); g.add(f);
     }
+    const rimRing = new THREE.Mesh(new THREE.TorusGeometry(R - 0.01, 0.02, 8, 120), glow(0xff6a3a, 0.75));
+    rimRing.rotation.y = Math.PI / 2; g.add(rimRing);
     rig.add(g);
     return g;
   }
 
-  // Plate racks on both sides: slot k nearest the bar holds the plate that goes on first.
-  const RACK_X = 6.3, SLOT = 0.62;
-  for (const s of [-1, 1]) {
-    const x0 = s * (RACK_X - 0.45), x1 = s * (RACK_X + SLOT * 3 + 0.45);
-    box(Math.abs(x1 - x0), 0.12, 0.9, frame, (x0 + x1) / 2, FLOOR + 0.06, 0);           // base
-    for (let k = 0; k <= 4; k++) box(0.06, 0.55, 0.06, steel, s * (RACK_X - SLOT / 2 + k * SLOT), FLOOR + 0.38, 0.38); // pins
-    box(0.12, 1.2, 0.12, frame, x1, FLOOR + 0.6, 0);                                     // end post
-  }
-
   const plates = [];
   let edge = 3.58;
-  PLATES.forEach(([R, t, w, name], k) => {
+  PLATES.forEach(([R, t, w, name]) => {
     const tex = faceTexture(w, name, font);
     const at = edge + t / 2; edge += t + 0.02;
-    plates.push({ R, at, rack: RACK_X + k * SLOT, pair: [plate(R, t, tex), plate(R, t, tex)] });
+    plates.push({ at, pair: [plate(R, t, tex), plate(R, t, tex)] });
   });
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.14));
-  const key = new THREE.DirectionalLight(0xffffff, 1.7); key.position.set(4, 7, 8); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xff5a24, 5); rim.position.set(-8, -2, -4); scene.add(rim);
-  const under = new THREE.PointLight(0xff4f1f, 60, 40); under.position.set(0, -4, 5); scene.add(under);
-  const cool = new THREE.DirectionalLight(0x7fb0ff, 0.6); cool.position.set(8, 3, -6); scene.add(cool);
+  // Orbit rings and drifting particles behind the bar
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.02, 8, 200), glow(0xff4f1f, 0.3)); halo.position.z = -1.5; scene.add(halo);
+  const halo2 = new THREE.Mesh(new THREE.TorusGeometry(4.4, 0.012, 8, 200), glow(0xffa070, 0.2)); halo2.position.z = -1.5; scene.add(halo2);
+  const N = 700, pts = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    const r = 3 + Math.random() * 7, a = Math.random() * Math.PI * 2;
+    pts.set([Math.cos(a) * r * 1.4, (Math.random() - 0.5) * 4, Math.sin(a) * r * 0.6 - 2], i * 3);
+  }
+  const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pts, 3));
+  const dust = new THREE.Points(pg, new THREE.PointsMaterial({ size: 0.045, color: 0xff9a6a, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending, depthWrite: false }));
+  scene.add(dust);
 
-  // Fit the whole rig (about 18 units wide) to the canvas.
+  scene.add(new THREE.AmbientLight(0xffffff, 0.16));
+  const key = new THREE.DirectionalLight(0xffffff, 1.8); key.position.set(4, 7, 8); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xff5a24, 6); rim.position.set(-8, -2, -4); scene.add(rim);
+  const under = new THREE.PointLight(0xff4f1f, 50, 40); under.position.set(0, -3.5, 4); scene.add(under);
+  const warm = new THREE.DirectionalLight(0xffd2b8, 0.8); warm.position.set(8, 3, -6); scene.add(warm);
+
+  // Frame the bar (about 12 units end to end) so it fills the canvas
   const resize = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
@@ -138,51 +134,54 @@ export default async function init(canvas, still) {
     camera.aspect = w / h;
     const hfov = 2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect);
     const vfov = THREE.MathUtils.degToRad(camera.fov);
-    // Wide: whole rig incl. both racks (angled view needs ~21 units). Narrow: frame the bar; plates swing in from off-screen racks.
-    const narrow = w < 640, span = narrow ? 12.6 : 21;
-    const dist = Math.max((span / 2) / (Math.tan(hfov / 2) * 0.96), (7.4 / 2) / (Math.tan(vfov / 2) * 0.92));
-    camera.position.set(0, dist * 0.2, dist);
-    camera.lookAt(0, narrow ? -0.35 : -0.75, 0);
+    const dist = Math.max((13 / 2) / Math.tan(hfov / 2), (5.6 / 2) / Math.tan(vfov / 2));
+    camera.position.set(0, dist * 0.14, dist);
+    camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
   };
   resize();
   addEventListener('resize', resize);
 
-  // Pair k's travel: a = 0 in its rack slot, a = 1 on the sleeve. It lifts out, swings over, slides on.
-  const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
-  let lift = 0;
+  // Pair k flies in from off-screen, spinning, and slides onto the sleeve as progress passes k/4
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
   const place = (p) => {
-    plates.forEach(({ R, at, rack, pair }, k) => {
-      const a = ease(Math.min(1, Math.max(0, (p - k / SERVICES) * SERVICES * 1.15)));
-      const barY = REST + lift, rackY = FLOOR + 0.12 + R;
+    plates.forEach(({ at, pair }, k) => {
+      const a = ease(Math.min(1, Math.max(0, (p - k / SERVICES) * SERVICES * 1.1)));
       pair.forEach((g, i) => {
-        const s = i ? 1 : -1;
-        g.position.set(s * (rack + (at - rack) * a), rackY + (barY - rackY) * a + Math.sin(Math.PI * a) * 1.4, Math.sin(Math.PI * a) * 0.6);
-        g.rotation.x = Math.sin(Math.PI * a) * 0.25 * s;
+        const s = i ? 1 : -1, from = at + 7 + k;
+        g.position.set(s * (from + (at - from) * a), (1 - a) * (1.8 - k * 0.9), (1 - a) * 2.5);
+        g.rotation.x = (1 - a) * 7 * s;
+        g.visible = a > 0.001;
       });
     });
   };
-  const setBar = () => (bell.position.y = REST + lift);
 
-  rig.rotation.set(0.02, -0.24, 0);
-  if (still) { lift = 0.9; setBar(); place(1); renderer.render(scene, camera); return; }
+  rig.rotation.set(0.05, -0.32, 0);
+  if (still) { place(1); core.material.opacity = 0.5; renderer.render(scene, camera); return; }
 
   let mx = 0, my = 0, visible = true, t0 = performance.now(), shown = canvas.loadProgress ?? 0;
   addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
   new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
 
-  const cur = { x: 0.02, y: -0.24 };
+  const cur = { x: 0.05, y: -0.32 };
   const tick = (t) => {
     requestAnimationFrame(tick);
     const dt = Math.max(0, Math.min((t - t0) / 1000, 0.05)); t0 = t;   // first frame can be stamped before t0
     if (!visible || document.hidden) return;
-    const target = canvas.loadProgress ?? 1;
-    shown += Math.sign(target - shown) * Math.min(Math.abs(target - shown), dt * 0.32);   // one pair takes ~0.8 s
-    lift += ((shown > 0.985 ? 0.9 : 0) - lift) * Math.min(1, dt * 3);                  // all four on: off the hooks
-    setBar(); place(shown);
-    cur.y += (-0.24 + mx * 0.22 - cur.y) * Math.min(1, dt * 3);
-    cur.x += (0.02 + my * 0.1 - cur.x) * Math.min(1, dt * 3);
-    rig.rotation.set(cur.x, cur.y, 0);
+    const T = t / 1000, target = canvas.loadProgress ?? 1;
+    shown += Math.sign(target - shown) * Math.min(Math.abs(target - shown), dt * 0.3);   // one pair takes ~0.8 s
+    place(shown);
+    core.material.opacity += ((shown > 0.985 ? 0.55 : 0) - core.material.opacity) * Math.min(1, dt * 2);
+    under.intensity = 50 + 60 * shown + Math.sin(T * 2) * 10;
+    // float: bob, sway, and lean toward the pointer
+    rig.position.y = Math.sin(T * 1.1) * 0.18;
+    cur.y += (-0.32 + Math.sin(T * 0.4) * 0.14 + mx * 0.3 - cur.y) * Math.min(1, dt * 3);
+    cur.x += (0.05 + Math.sin(T * 0.7) * 0.03 + my * 0.12 - cur.x) * Math.min(1, dt * 3);
+    rig.rotation.set(cur.x, cur.y, Math.sin(T * 0.9) * 0.025);
+    halo.rotation.set(Math.sin(T * 0.3) * 0.25, T * 0.2, 0);
+    halo2.rotation.set(1.1 + Math.sin(T * 0.25) * 0.2, -T * 0.12, 0.3);
+    halo.material.opacity = 0.2 + 0.4 * shown;
+    dust.rotation.y = T * 0.03;
     renderer.render(scene, camera);
   };
   requestAnimationFrame(tick);

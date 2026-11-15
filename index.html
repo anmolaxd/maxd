@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=14">
+<link rel="stylesheet" href="styles.css?v=15">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
@@ -50,10 +50,15 @@
     </div>
   </div>
 
+  <!-- 3D bar: each plate is one service. As each plate goes on, that service's card floats in. -->
   <div class="hero-stage" aria-hidden="true">
     <div class="hero-glow"></div>
     <canvas></canvas>
-    <p class="hero-note">Four services · one bar · each plate is one</p>
+    <div class="hc hc-1"><i class="hc-ico">✓</i><p><small>WhatsApp · renewal reminder</small><b>Priya renewed · ₹4,500</b></p></div>
+    <div class="hc hc-2"><i class="hc-ico">AI</i><p><small>AI Front Desk · 23:04</small><b>Replied in 3 s · trial booked</b></p></div>
+    <div class="hc hc-3"><i class="hc-ico">↗</i><p><small>yourgym.com</small><b>New trial · Sat 9 am</b></p></div>
+    <div class="hc hc-4"><i class="hc-ico">▮</i><p><small>Owner dashboard</small><b>9 of 12 renewals done</b></p><span class="hc-bars"><s style="--h:40%"></s><s style="--h:62%"></s><s style="--h:48%"></s><s style="--h:75%"></s><s style="--h:90%"></s></span></div>
+    <p class="hc-live"><span></span>4 services live</p>
   </div>
 </section>
 
@@ -253,6 +258,6 @@
   <div class="fc-bottom"><span>© 2026 MAXD</span><span>Mysuru, India</span></div>
 </footer>
 
-<script src="main.js?v=13"></script>
+<script src="main.js?v=15"></script>
 </body>
 </html>

@@ -81,11 +81,18 @@
   // No WebGL or offline: the canvas goes and the glow stays.
   const heroBar = document.querySelector('.hero-stage canvas');
   if (heroBar) {
+    const cards = [...document.querySelectorAll('.hero-stage .hc')], live = document.querySelector('.hc-live');
+    // each card floats in as its plate lands (one pair every ~0.8 s); without WebGL they still come in on the same beat
+    const reveal = (lead) => {
+      cards.forEach((c, k) => setTimeout(() => c.classList.add('in'), motion ? lead + 650 + k * 800 : 0));
+      if (live) setTimeout(() => live.classList.add('in'), motion ? lead + 3600 : 0);
+    };
     heroBar.loadProgress = motion ? 0 : 1;
-    import('./bar3d.js').then((m) => m.default(heroBar, !motion)).then(() => {
+    import('./bar3d.js?v=15').then((m) => m.default(heroBar, !motion)).then(() => {
       heroBar.classList.add('ready');
       if (motion) setTimeout(() => (heroBar.loadProgress = 1), 700);
-    }).catch(() => heroBar.remove());
+      reveal(700);
+    }).catch(() => { heroBar.remove(); reveal(0); });
   }
 
   /* ---------- how we work: each term lights up as it reaches the middle of the screen ---------- */

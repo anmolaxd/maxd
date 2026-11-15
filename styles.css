@@ -359,3 +359,8 @@ a:hover > .roll span, a:focus-visible > .roll span { transform: translateY(-1.3e
   .kit-js .kit-demos .mock { padding: 14px; }
   .ks-note span:first-child { display: none; }
 }
+/* phones: the decorative plates take room the service text and demo need, so drop them */
+@media (max-width: 600px) {
+  .kit-js .kit-stage { display: none; }
+  .kit-js .kit-pin { grid-template-rows: minmax(0, 1fr); }
+}
